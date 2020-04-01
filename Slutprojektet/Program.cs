@@ -10,26 +10,32 @@ namespace Slutprojektet
     {
         static void Main()
         {
+            Random generator = new Random();
+
             string name = "";
 
             string item = "";
+
+            bool validAnswer = false;
 
             //Använder två arrayer nedan eftersom det endast ska finnas dessa bestämda items och names.
 
             string[] names = { "Bob", "Tom", "Man" };
 
-            string[] cellItems = { "The File", "The NrG Drink", "The Teleporter", "The Rocket Launcher", "The Cellphone", "The Drill" };
+            string[] cellItems = { "The File", "The NrG Drink", "The Teleporter"/*, "The Rocket Launcher", "The Cellphone", "The Drill" */};
+
+            string[] roomDescriptions = { "You open your eyes and realize you are in a cell."};
+
+            string[] cellItemDescriptions = { "Do you want to use " + cellItems[0] + " on the cell window or the cell door?"};
 
             //I slutet ska man skriva in en kod som baseras på de valen man väljer. Om man valde det tredje alternativet i den första så ska man 
 
-            string location = "";
+            string location = "cell";
 
-            while (location != "outside"){
-                Console.WriteLine("You open your eyes and realize you are in a cell");
+            while (location == "cell"){
+                Console.WriteLine(roomDescriptions[0]);
 
                 Console.WriteLine("\nA prison officer comes and visits your cell, what's your name he asks.");
-
-                bool validAnswer = false;
 
                 while (validAnswer == false){
                     for (int i = 0; i < names.Length; i++){
@@ -61,9 +67,7 @@ namespace Slutprojektet
                     }
                 }
 
-                Console.WriteLine();
-
-                Console.WriteLine("Your name is now " + name + ".");
+                Console.WriteLine("\nYour name is now " + name + ".");
 
                 validAnswer = false;
 
@@ -71,8 +75,7 @@ namespace Slutprojektet
 
                     Console.WriteLine("\nYou see six different items spread out on the floor:");
 
-                    for (int i = 0; i < cellItems.Length; i++)
-                    {
+                    for (int i = 0; i < cellItems.Length; i++){
                         Console.WriteLine(i + 1 + " " + cellItems[i]);
                     }
 
@@ -92,7 +95,7 @@ namespace Slutprojektet
                         item = cellItems[2];
                         validAnswer = true;
                     }
-                    else if (MakeStringToInt(userTtemInpt) == 4){
+                    /*else if (MakeStringToInt(userTtemInpt) == 4){
                         item = cellItems[3];
                         validAnswer = true;
                     }
@@ -103,17 +106,38 @@ namespace Slutprojektet
                     else if (MakeStringToInt(userTtemInpt) == 6){
                         item = cellItems[5];
                         validAnswer = true;
-                    }
+                    }*/
                     else{
                         Console.WriteLine("Type an integer between 1-6");
                         Console.WriteLine("Press any key to try again");
                         Console.ReadKey();
                         Console.Clear();
                     }
+                    if (item == cellItems[0])
+                    {
+                        Console.WriteLine("\nYour picked up " + item + ".");
 
-                    Console.WriteLine();
+                        Console.WriteLine("\n" + cellItemDescriptions[0]);
 
-                    Console.WriteLine("Your picked up " + item + ".");
+                        Console.WriteLine("\nAnswer the next two statements with either 1 for true or 0 for false.");
+
+                        Console.WriteLine("\nYou want to use The File on the cell window.");
+
+                        string windowTrueOrFalse = Console.ReadLine();
+
+                        Console.WriteLine("\nYou want to use The File on the cell door.");
+
+                        string doorTrueOrFalse = Console.ReadLine();
+
+                        TrueOrFalse(MakeStringToInt(windowTrueOrFalse), MakeStringToInt(doorTrueOrFalse));
+                    }
+
+                    
+                    Console.ReadLine();
+
+                    Console.Clear();
+
+                    Console.WriteLine("THE GAME TRIAL HAS ENDED.");
 
                     Console.ReadLine();
 
@@ -121,11 +145,23 @@ namespace Slutprojektet
                 }
             }
         }
-        static int MakeStringToInt(string userInpt)
-        {
+        static int MakeStringToInt(string userInpt){
             int.TryParse(userInpt, out int userInptInt);
 
             return userInptInt;
+        }
+        static string TrueOrFalse(int x, int y){
+            if (x == y)
+            {
+                string 
+            }}
+            else if (x > y){
+                string  
+            }
+            else if (x < y)
+            {
+
+            }
         }
     }
 }
