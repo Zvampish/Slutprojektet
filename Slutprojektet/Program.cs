@@ -10,7 +10,7 @@ namespace Slutprojektet
     {
         static void Main()
         {
-            Random generator = new Random();
+            //Random generator = new Random();
 
             string name = "";
 
@@ -26,7 +26,7 @@ namespace Slutprojektet
 
             string[] roomDescriptions = { "You open your eyes and realize you are in a cell."};
 
-            string[] cellItemDescriptions = { "Do you want to use " + cellItems[0] + " on the cell window or the cell door?"};
+            string[] retryTips = { "Type an integer between 1-3", "Type an integer between 1-6", "Type an integer between 0-1"};
 
             //I slutet ska man skriva in en kod som baseras på de valen man väljer. Om man valde det tredje alternativet i den första så ska man 
 
@@ -38,6 +38,8 @@ namespace Slutprojektet
                 Console.WriteLine("\nA prison officer comes and visits your cell, what's your name he asks.");
 
                 while (validAnswer == false){
+                    Console.WriteLine();
+
                     for (int i = 0; i < names.Length; i++){
                         Console.WriteLine(i + 1 + " " + names[i]);
                     }
@@ -59,11 +61,7 @@ namespace Slutprojektet
                         validAnswer = true;
                     }
                     else{
-                        Console.Clear();
-                        Console.WriteLine("Type an integer between 1-3");
-                        Console.WriteLine("\nPress any key to try again");
-                        Console.ReadKey();
-                        Console.Clear();
+                        Else(retryTips[0]);
                     }
                 }
 
@@ -108,31 +106,34 @@ namespace Slutprojektet
                         validAnswer = true;
                     }*/
                     else{
-                        Console.WriteLine("Type an integer between 1-6");
-                        Console.WriteLine("Press any key to try again");
-                        Console.ReadKey();
-                        Console.Clear();
+                        Else(retryTips[1]);
                     }
+
                     if (item == cellItems[0])
                     {
                         Console.WriteLine("\nYour picked up " + item + ".");
 
-                        Console.WriteLine("\n" + cellItemDescriptions[0]);
+                        while (validAnswer == false){
+                            Console.WriteLine("\nOption 1: use The File on the cell window");
+                            Console.WriteLine("\nOption 2: use The File on the cell door ?");
 
-                        Console.WriteLine("\nAnswer the next two statements with either 1 for true or 0 for false.");
+                            string windowOrDoor = Console.ReadLine();
 
-                        Console.WriteLine("\nYou want to use The File on the cell window.");
+                            if(MakeStringToInt(windowOrDoor) == 0){
 
-                        string windowTrueOrFalse = Console.ReadLine();
+                                Console.WriteLine("You filed the window bars for three hours just to jump out of the window and fall 30 meters to a guaranteed death");
+                                location = "hell";
+                            }
+                            else if (MakeStringToInt(windowOrDoor) == 1){
 
-                        Console.WriteLine("\nYou want to use The File on the cell door.");
-
-                        string doorTrueOrFalse = Console.ReadLine();
-
-                        TrueOrFalse(MakeStringToInt(windowTrueOrFalse), MakeStringToInt(doorTrueOrFalse));
+                                validAnswer = true;
+                            }
+                            else{
+                            Else(retryTips[2]);
+                            }
+                        }
                     }
 
-                    
                     Console.ReadLine();
 
                     Console.Clear();
@@ -144,24 +145,35 @@ namespace Slutprojektet
                     location = "outside";
                 }
             }
+            while (location == "hell"){
+                Console.Clear();
+                Console.WriteLine("You died");
+                Console.WriteLine("\nGAME OVER");
+                Console.WriteLine("Do you want to restart? (Y/N)");
+                while (Console.ReadKey().Key != ConsoleKey.Y){
+                    if(Console.ReadKey().Key != ConsoleKey.N){
+                        location = "cell";
+                    }
+                    else{
+
+                    }
+                }
+            }
+            while (location == "outside"){
+
+            }
         }
         static int MakeStringToInt(string userInpt){
             int.TryParse(userInpt, out int userInptInt);
-
             return userInptInt;
         }
-        static string TrueOrFalse(int x, int y){
-            if (x == y)
-            {
-                string 
-            }}
-            else if (x > y){
-                string  
-            }
-            else if (x < y)
-            {
-
-            }
+        static bool ExitDoorCode(int one, int two, int three, int four){
+            return true;
+        }
+        static void Else(string tip){
+            Console.WriteLine("\n" + tip);
+            Console.WriteLine("\nPress any key to try again");
+            Console.ReadKey();
         }
     }
 }
