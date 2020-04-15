@@ -10,56 +10,46 @@ namespace Slutprojektet
     {
         static void Main()
         {
-            //Random generator = new Random();
-
-            string name = "";
-
-            string item = "";
-
-            bool validAnswer = false;
-
-            //Använder två arrayer nedan eftersom det endast ska finnas dessa bestämda items och names.
-
-            string[] names = { "Bob", "Tom", "Man" };
-
-            string[] cellItems = { "The File", "The NrG Drink", "The Teleporter" };
-
-            string[] roomDescriptions = { "You open your eyes and realize you are in a cell." };
-
-            string[] retryTips = { "Type an integer between 1-3", "Type an integer between 1-6", "Type an integer between 0-1", "Type either Y or N (lower case does not work)" };
-
-            //I slutet ska man skriva in en kod som baseras på de valen man väljer. Om man valde det tredje alternativet i den första så ska man 
-
             string location = "cell";
-
-
 
             while (location == "cell")
             {
-                validAnswer = false;
+                string name = "";
 
-                if (item == cellItems[0])
+                bool validAnswer = false;
+
+                //Använder fyra arrayer nedan eftersom det endast ska finnas dessa bestämda föremål, namnen, beskrivningarna och tipsen.
+
+                string[] names = { "Bob", "Tom", "Man" };
+
+                string[] cellItems = { "The File", "The NrG Drink", "The Teleporter" };
+
+                string[] roomDescriptions = { "You open your eyes and realize you are in a cell." };
+
+                string[] retryTips = { "Type an integer between 1-3", "Type an integer between 1-2", "Type either Y or N (lower case does not work)" };
+
+                Console.WriteLine(roomDescriptions[0]);
+                Console.WriteLine("\nA prison officer comes and visits your cell, what's your name he asks.");
+                AskForName(validAnswer, name, names, retryTips);
+                string x = AskForItem(validAnswer, cellItems, name, "", retryTips);
+                string y = UsingItems(validAnswer, x, cellItems, location, retryTips);
+                if (y == "end")
                 {
-
-                    Console.WriteLine("\nYour picked up " + item + ".");
-
                     while (validAnswer == false)
                     {
-                        Console.WriteLine("\nEnter 1 to use The File on the cell window.");
-                        Console.WriteLine("\nEnter 2 to use The File on the cell door.");
+                        Console.WriteLine("Do you want to restart? (Y/N)");
 
-                        string windowOrDoor = Console.ReadLine();
+                        string restartOrNot = Console.ReadLine().ToUpper().Trim();
 
-                        if (MakeStringToInt(windowOrDoor) == 1)
+                        if (restartOrNot == "Y")
                         {
                             Console.Clear();
-                            Console.WriteLine("You filed the window bars for three hours just to jump out of the window and fall 30 meters to a guaranteed death.");
-                            location = "hell";
                             validAnswer = true;
-                        }
-                        else if (MakeStringToInt(windowOrDoor) == 2)
-                        {
 
+                        }
+                        else if (restartOrNot == "N")
+                        {
+                            location = "outside";
                             validAnswer = true;
                         }
                         else
@@ -67,66 +57,18 @@ namespace Slutprojektet
                             Else(retryTips[2]);
                         }
 
-
-
-
-                        while (location == "hell")
-                        {
-                            Console.WriteLine("You died");
-                            Console.WriteLine("\nGAME OVER");
-                            Console.WriteLine("Do you want to restart? (Y/N)");
-                            validAnswer = false;
-                            string restartOrNot = Console.ReadLine().ToUpper().Trim();
-
-                            while (validAnswer == false)
-                            {
-                                if (restartOrNot == "Y")
-                                {
-                                    location = "cell";
-                                    validAnswer = true;
-                                    Console.Clear();
-                                }
-                                else if (restartOrNot == "N")
-                                {
-                                    location = "end";
-                                }
-                                else
-                                {
-                                    Else(retryTips[3]);
-                                }
-                            }
-                        }
-
-                        while (location == "end")
-                        {
-                            Console.Clear();
-                            Console.WriteLine("THE GAME TRIAL HAS ENDED.");
-                            Console.ReadLine();
-                        }
-
-
-                    }
-
-                    while (location == "outside")
-                    {
-
                     }
                 }
+                Console.Clear();
+                Console.WriteLine("Om du har kommit hit är det atingen slut på content eller så har du dött och försökt starta om (Tryck ENTER för att spela igen)");
+                Console.ReadLine();
+                Console.Clear();
             }
         }
         static int MakeStringToInt(string userInpt)
         {
-            bool trueOrNot = int.TryParse(userInpt, out int userInptInt);
-            int bruh = 403;
-            if (trueOrNot == true)
-            {
-                return userInptInt;
-            }
-            else
-            {
-                return bruh;
-            }
-
+            int.TryParse(userInpt, out int userInptInt);
+            return userInptInt;
         }
         static void Else(string tip)
         {
@@ -134,13 +76,11 @@ namespace Slutprojektet
             Console.WriteLine("\nPress any key to try again");
             Console.ReadKey();
         }
-        static void Intro(string roomDescriptions)
-        {
-            Console.WriteLine(roomDescriptions[0]);
-            Console.WriteLine("\nA prison officer comes and visits your cell, what's your name he asks.");
-        }
+        //Nedan skulle jag kunna kombinera Íntro() och AskForName() eller lägga intro i Main men jag valde att göra såhär så att 
         static void AskForName(bool validAnswer, string name, string[] names, string[] retryTips)
         {
+            validAnswer = false;
+
             while (validAnswer == false)
             {
                 Console.WriteLine();
@@ -174,18 +114,17 @@ namespace Slutprojektet
                     Else(retryTips[0]);
                 }
             }
-        }
-        static void AskForItem(bool validAnswer, string[] cellItems, string name, string item, string[] retryTips)
-        {
-            Console.WriteLine("\nYour name is now " + name + ".");
 
+            Console.WriteLine("\nYour name is now " + name + ".");
+        }
+        static string AskForItem(bool validAnswer, string[] cellItems, string name, string item, string[] retryTips)
+        {
             validAnswer = false;
+
+            Console.WriteLine("\nYou see six different items spread out on the floor:");
 
             while (validAnswer == false)
             {
-
-                Console.WriteLine("\nYou see six different items spread out on the floor:");
-
                 for (int i = 0; i < cellItems.Length; i++)
                 {
                     Console.WriteLine(i + 1 + " " + cellItems[i]);
@@ -211,13 +150,60 @@ namespace Slutprojektet
                 }
                 else
                 {
-                    Else(retryTips[1]);
+                    Else(retryTips[0]);
                 }
             }
-        }  
-        static bool ExitDoorCode(int one, int two, int three, int four){
+            return item;
+        }
+        static string UsingItems(bool validAnswer, string item, string[] cellItems, string location, string[] retryTips)
+        {
+            if (item == cellItems[0])
+            {
+                Console.WriteLine("\nYour picked up " + item + ".");
+
+                while (validAnswer == false)
+                {
+                    Console.WriteLine("\nEnter 1 to use The File on the cell window.");
+                    Console.WriteLine("\nEnter 2 to use The File on the cell door.");
+
+                    string windowOrDoor = Console.ReadLine();
+
+                    if (MakeStringToInt(windowOrDoor) == 1)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("You filed the window bars for three hours just to jump out of the window and fall 30 meters to a guaranteed death.");
+                        location = "end";
+                        validAnswer = true;
+                    }
+                    else if (MakeStringToInt(windowOrDoor) == 2)
+                    {
+                        Console.Clear();
+                        validAnswer = true;
+                    }
+                    else
+                    {
+                        Else(retryTips[1]);
+                    }
+                }
+            }
+            else if (item == cellItems[1])
+            {
+
+            }
+            else if (item == cellItems[1])
+            {
+
+            }
+            else
+            {
+
+            }
+
+            return location;
+        }
+        static bool ExitDoorCode(int one, int two, int three, int four)
+        {
             return true;
         }
-        
     }
 }
