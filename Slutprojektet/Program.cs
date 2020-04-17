@@ -14,26 +14,28 @@ namespace Slutprojektet
 
             while (location == "cell")
             {
-                string name = "";
-
                 bool validAnswer = false;
 
                 //Använder fyra arrayer nedan eftersom det endast ska finnas dessa bestämda föremål, namnen, beskrivningarna och tipsen.
-
-                string[] names = { "Bob", "Tom", "Man" };
 
                 string[] cellItems = { "The File", "The NrG Drink", "The Teleporter" };
 
                 string[] roomDescriptions = { "You open your eyes and realize you are in a cell." };
 
-                string[] retryTips = { "Type an integer between 1-3", "Type an integer between 1-2", "Type either Y or N (lower case does not work)" };
+                string[] retryTips = { "Tip: Only one integer between 1-3 is a valid answer.", "Tip: Only one integer between 1-2 is a valid answer."
+                                      ,"Tip: Only Y or N  is a valid answer." };
 
                 Console.WriteLine(roomDescriptions[0]);
                 Console.WriteLine("\nA prison officer comes and visits your cell, what's your name he asks.");
-                AskForName(validAnswer, name, names, retryTips);
-                string x = AskForItem(validAnswer, cellItems, name, "", retryTips);
-                string y = UsingItems(validAnswer, x, cellItems, location, retryTips);
-                if (y == "end")
+                AskForName(validAnswer, retryTips);
+                string x = AskForItem(validAnswer, cellItems, "", retryTips);
+                string currentLocation = UsingItems(validAnswer, x, cellItems, location, retryTips);
+                string z = RetryMaybe(currentLocation, validAnswer, location, retryTips);
+                if (z == "outside"){
+                    location = "outside";
+                }
+                //Skulle kunna lägga detta i en metod under komplettering och sedan returnera "location" variabeln för att se om de är "outside".
+                /*if (y == "end")
                 {
                     while (validAnswer == false)
                     {
@@ -43,6 +45,10 @@ namespace Slutprojektet
 
                         if (restartOrNot == "Y")
                         {
+                            Console.Clear();
+                            Console.Clear();
+                            Console.WriteLine("If you have come here there's either no more content or you died and tried to restart(Press ENTER to play again).");
+                            Console.ReadLine();
                             Console.Clear();
                             validAnswer = true;
 
@@ -56,13 +62,15 @@ namespace Slutprojektet
                         {
                             Else(retryTips[2]);
                         }
-
                     }
                 }
-                Console.Clear();
-                Console.WriteLine("Om du har kommit hit är det atingen slut på content eller så har du dött och försökt starta om (Tryck ENTER för att spela igen)");
-                Console.ReadLine();
-                Console.Clear();
+                else if (y == "cell")
+                {
+                    Console.Clear();
+                    Console.WriteLine("If you have come here there's either no more content or you died and tried to restart(Press ENTER to play again).");
+                    Console.ReadLine();
+                    Console.Clear();
+                }*/
             }
         }
         static int MakeStringToInt(string userInpt)
@@ -72,14 +80,17 @@ namespace Slutprojektet
         }
         static void Else(string tip)
         {
-            Console.WriteLine("\n" + tip);
-            Console.WriteLine("\nPress any key to try again");
+            Console.WriteLine("ERROR: False Input");
+            Console.WriteLine(tip);
+            Console.WriteLine("(Press any key to try again)");
             Console.ReadKey();
+            Console.WriteLine();
         }
-        //Nedan skulle jag kunna kombinera Íntro() och AskForName() eller lägga intro i Main men jag valde att göra såhär så att 
-        static void AskForName(bool validAnswer, string name, string[] names, string[] retryTips)
+        static void AskForName(bool validAnswer, string[] retryTips)
         {
-            validAnswer = false;
+            string[] names = { "Bob", "Tom", "Man" };
+
+            string name = "";
 
             while (validAnswer == false)
             {
@@ -117,7 +128,7 @@ namespace Slutprojektet
 
             Console.WriteLine("\nYour name is now " + name + ".");
         }
-        static string AskForItem(bool validAnswer, string[] cellItems, string name, string item, string[] retryTips)
+        static string AskForItem(bool validAnswer, string[] cellItems, string item, string[] retryTips)
         {
             validAnswer = false;
 
@@ -201,9 +212,44 @@ namespace Slutprojektet
 
             return location;
         }
-        static bool ExitDoorCode(int one, int two, int three, int four)
+        static string RetryMaybe(string y, bool validAnswer, string location, string[] retryTips)
         {
-            return true;
+            if (y == "end")
+            {
+                while (validAnswer == false)
+                {
+                    Console.WriteLine("Do you want to restart? (Y/N)");
+
+                    string restartOrNot = Console.ReadLine().ToUpper().Trim();
+
+                    if (restartOrNot == "Y")
+                    {
+                        Console.Clear();
+                        Console.Clear();
+                        Console.WriteLine("If you have come here there's either no more content or you died and tried to restart(Press ENTER to play again).");
+                        Console.ReadLine();
+                        Console.Clear();
+                        validAnswer = true;
+
+                    }
+                    else if (restartOrNot == "N")
+                    {
+                        location = "outside";
+                        validAnswer = true;
+                    }
+                    else
+                    {
+                        Else(retryTips[2]);
+                    }
+                }
+            }
+            else if (y == "cell")
+            {
+                Console.Clear();
+                Console.WriteLine("If you have come here there's either no more content or you died and tried to restart(Press ENTER to play again).");
+                Console.Clear();
+            }
+            return location;
         }
     }
 }
